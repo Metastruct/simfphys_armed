@@ -92,10 +92,10 @@ local V = {
 		
 		EngineSoundPreset = 0,
 		
-		Sound_Idle = "simulated_vehicles/c_apc/apc_idle.wav",
+		Sound_Idle = "vehicles/apc/apc_idle1.wav",
 		Sound_IdlePitch = 1,
 		
-		Sound_Mid = "simulated_vehicles/c_apc/apc_mid.wav",
+		Sound_Mid = "vehicles/apc/apc_firstgear_loop1.wav",
 		Sound_MidPitch = 1,
 		Sound_MidVolume = 1,
 		Sound_MidFadeOutRPMpercent = 100,
@@ -163,17 +163,38 @@ local V = {
 		EngineSoundPreset = -1,
 		
 		snd_pitch = 1,
-		snd_idle = "simulated_vehicles/jeep/jeep_idle.wav",
+		snd_idle = "vehicles/v8/v8_idle_loop1.wav",
 		
-		snd_low = "simulated_vehicles/jeep/jeep_low.wav",
-		snd_low_revdown = "simulated_vehicles/jeep/jeep_revdown.wav",
+		snd_low = "vehicles/v8/first.wav",
+		snd_low_revdown = "vehicles/v8/v8_throttle_off_fast_loop1.wav",
 		snd_low_pitch = 0.9,
 		
-		snd_mid = "simulated_vehicles/jeep/jeep_mid.wav",
-		snd_mid_gearup = "simulated_vehicles/jeep/jeep_second.wav",
+		snd_mid = "vehicles/v8/second.wav",
+		snd_mid_gearup = "vehicles/v8/v8_firstgear_rev_loop1.wav",
+
 		snd_mid_pitch = 1,
+
+		Sound_Idle = "vehicles/v8/v8_idle_loop1.wav",
+		Sound_IdlePitch = 1,
 		
-		snd_horn = "simulated_vehicles/horn_1.wav",
+		Sound_Mid = "vehicles/v8/second.wav",
+		Sound_MidPitch = 1,
+		Sound_MidVolume = 1,
+		Sound_MidFadeOutRPMpercent = 58,
+		Sound_MidFadeOutRate = 0.476,
+		
+		Sound_High = "vehicles/v8/third.wav",
+		Sound_HighPitch = 1,
+		Sound_HighVolume = 0.75,
+		Sound_HighFadeInRPMpercent = 58,
+		Sound_HighFadeInRate = 0.19,
+		
+		Sound_Throttle = "",
+		Sound_ThrottlePitch = 0,
+		Sound_ThrottleVolume = 0,
+		--
+		
+		snd_horn = "simulated_vehicles/horn_5.wav", 
 		
 		ForceTransmission = AUTOMATIC,
 		DifferentialGear = 0.3,
@@ -228,21 +249,41 @@ local V = {
 		PowerbandEnd = 6300,
 		
 		PowerBias = 0.5,
-		
-		EngineSoundPreset = -1,
+				EngineSoundPreset = -1,
 		
 		snd_pitch = 1,
-		snd_idle = "simulated_vehicles/jeep/jeep_idle.wav",
+		snd_idle = "vehicles/v8/v8_idle_loop1.wav",
 		
-		snd_low = "simulated_vehicles/jeep/jeep_low.wav",
-		snd_low_revdown = "simulated_vehicles/jeep/jeep_revdown.wav",
+		snd_low = "vehicles/v8/first.wav",
+		snd_low_revdown = "vehicles/v8/v8_throttle_off_fast_loop1.wav",
 		snd_low_pitch = 0.9,
 		
-		snd_mid = "simulated_vehicles/jeep/jeep_mid.wav",
-		snd_mid_gearup = "simulated_vehicles/jeep/jeep_second.wav",
+		snd_mid = "vehicles/v8/second.wav",
+		snd_mid_gearup = "vehicles/v8/v8_firstgear_rev_loop1.wav",
+
 		snd_mid_pitch = 1,
+
+		Sound_Idle = "vehicles/v8/v8_idle_loop1.wav",
+		Sound_IdlePitch = 1,
 		
-		snd_horn = "simulated_vehicles/horn_1.wav",
+		Sound_Mid = "vehicles/v8/second.wav",
+		Sound_MidPitch = 1,
+		Sound_MidVolume = 1,
+		Sound_MidFadeOutRPMpercent = 58,
+		Sound_MidFadeOutRate = 0.476,
+		
+		Sound_High = "vehicles/v8/third.wav",
+		Sound_HighPitch = 1,
+		Sound_HighVolume = 0.75,
+		Sound_HighFadeInRPMpercent = 58,
+		Sound_HighFadeInRate = 0.19,
+		
+		Sound_Throttle = "",
+		Sound_ThrottlePitch = 0,
+		Sound_ThrottleVolume = 0,
+		--
+		
+		snd_horn = "simulated_vehicles/horn_5.wav", 
 		
 		ForceTransmission = AUTOMATIC,
 		DifferentialGear = 0.3,
@@ -250,191 +291,10 @@ local V = {
 	}
 }
 list.Set( "simfphys_vehicles", "sim_fphys_jeep_armed2", V )
-
-local V = {
-	Name = "Synergy Elite Jeep taucannon",
-	Model = "models/vehicles/buggy_elite.mdl",
-	Class = "gmod_sent_vehicle_fphysics_base",
-	Category = "Armed Vehicles",
-
-	Members = {
-		Mass = 1700,
-		
-		LightsTable = "elitejeep",
-		
-		FrontWheelRadius = 18,
-		RearWheelRadius = 20,
-		
-		SeatOffset = Vector(0,0,-3),
-		SeatPitch = 0,
-		
-		PassengerSeats = {
-			{
-			pos = Vector(16,-35,16),
-			ang = Angle(0,0,0)
-			}
-		},
-		
-		Backfire = true,
-		ExhaustPositions = {
-			{
-				pos = Vector(-15.69,-105.94,14.94),
-				ang = Angle(90,-90,0)
-			},
-			{
-				pos = Vector(16.78,-105.46,14.35),
-				ang = Angle(90,-90,0)
-			}
-		},
-		
-		StrengthenSuspension = true,
-		
-		FrontHeight = 13.5,
-		FrontConstant = 27000,
-		FrontDamping = 2200,
-		FrontRelativeDamping = 1500, 
-		
-		RearHeight = 13.5,
-		RearConstant = 32000,
-		RearDamping = 2200,
-		RearRelativeDamping = 1500,
-		
-		FastSteeringAngle = 10,
-		SteeringFadeFastSpeed = 535,
-		
-		TurnSpeed = 8,
-		
-		MaxGrip = 44,
-		Efficiency = 1.4,
-		GripOffset = 0,
-		BrakePower = 40,
-		BulletProofTires = true,
-		
-		IdleRPM = 750,
-		LimitRPM = 7500,
-		PeakTorque = 100,
-		PowerbandStart = 2500,
-		PowerbandEnd = 7300,
-		Turbocharged = false,
-		Supercharged = false,
-		
-		PowerBias = 0.6,
-		
-		EngineSoundPreset = -1,
-		
-		snd_pitch = 1,
-		snd_idle = "simulated_vehicles/v8elite/v8elite_idle.wav",
-		
-		snd_low = "simulated_vehicles/v8elite/v8elite_low.wav",
-		snd_low_revdown = "simulated_vehicles/v8elite/v8elite_revdown.wav",
-		snd_low_pitch = 0.8,
-		
-		snd_mid = "simulated_vehicles/v8elite/v8elite_mid.wav",
-		snd_mid_gearup = "simulated_vehicles/v8elite/v8elite_second.wav",
-		snd_mid_pitch = 1,
-		
-		snd_horn = "simulated_vehicles/horn_4.wav",
-		
-		DifferentialGear = 0.38,
-		Gears = {-0.1,0,0.1,0.18,0.25,0.31,0.40}
-	}
-}
-list.Set( "simfphys_vehicles", "sim_fphys_v8elite_armed", V )
-
-
-local V = {
-	Name = "Synergy Elite Jeep airboatgun",
-	Model = "models/vehicles/buggy_elite.mdl",
-	Class = "gmod_sent_vehicle_fphysics_base",
-	Category = "Armed Vehicles",
-
-	Members = {
-		Mass = 1700,
-		
-		LightsTable = "elitejeep",
-		
-		FrontWheelRadius = 18,
-		RearWheelRadius = 20,
-		
-		SeatOffset = Vector(0,0,-3),
-		SeatPitch = 0,
-		
-		PassengerSeats = {
-			{
-			pos = Vector(16,-35,16),
-			ang = Angle(0,0,0)
-			}
-		},
-		
-		Backfire = true,
-		ExhaustPositions = {
-			{
-				pos = Vector(-15.69,-105.94,14.94),
-				ang = Angle(90,-90,0)
-			},
-			{
-				pos = Vector(16.78,-105.46,14.35),
-				ang = Angle(90,-90,0)
-			}
-		},
-		
-		StrengthenSuspension = true,
-		
-		FrontHeight = 13.5,
-		FrontConstant = 27000,
-		FrontDamping = 2200,
-		FrontRelativeDamping = 1500, 
-		
-		RearHeight = 13.5,
-		RearConstant = 32000,
-		RearDamping = 2200,
-		RearRelativeDamping = 1500,
-		
-		FastSteeringAngle = 10,
-		SteeringFadeFastSpeed = 535,
-		
-		TurnSpeed = 8,
-		
-		MaxGrip = 44,
-		Efficiency = 1.4,
-		GripOffset = 0,
-		BrakePower = 40,
-		BulletProofTires = true,
-		
-		IdleRPM = 750,
-		LimitRPM = 7500,
-		PeakTorque = 100,
-		PowerbandStart = 2500,
-		PowerbandEnd = 7300,
-		Turbocharged = false,
-		Supercharged = false,
-		
-		PowerBias = 0.6,
-		
-		EngineSoundPreset = -1,
-		
-		snd_pitch = 1,
-		snd_idle = "simulated_vehicles/v8elite/v8elite_idle.wav",
-		
-		snd_low = "simulated_vehicles/v8elite/v8elite_low.wav",
-		snd_low_revdown = "simulated_vehicles/v8elite/v8elite_revdown.wav",
-		snd_low_pitch = 0.8,
-		
-		snd_mid = "simulated_vehicles/v8elite/v8elite_mid.wav",
-		snd_mid_gearup = "simulated_vehicles/v8elite/v8elite_second.wav",
-		snd_mid_pitch = 1,
-		
-		snd_horn = "simulated_vehicles/horn_4.wav",
-		
-		DifferentialGear = 0.38,
-		Gears = {-0.1,0,0.1,0.18,0.25,0.31,0.40}
-	}
-}
-list.Set( "simfphys_vehicles", "sim_fphys_v8elite_armed2", V )
-
+--[[
 local V = {
 	Name = "HL2 APC",
-	Model = "models/apc/apc.mdl",
+	Model = "models/props_vehicles/apc001.mdl",
 	Class = "gmod_sent_vehicle_fphysics_base",
 	Category = "Armed Vehicles",
 	SpawnOffset = Vector(0,0,60),
@@ -605,16 +465,16 @@ local V = {
 		
 		EngineSoundPreset = 0,
 		
-		Sound_Idle = "simulated_vehicles/misc/Nanjing_loop.wav",
+		Sound_Idle = "vehicles/apc/apc_idle1.wav",
 		Sound_IdlePitch = 1,
 		
-		Sound_Mid = "simulated_vehicles/misc/m50.wav",
+		Sound_Mid = "vehicles/apc/apc_firstgear_loop1.wav",
 		Sound_MidPitch = 1,
 		Sound_MidVolume = 1,
 		Sound_MidFadeOutRPMpercent = 58,
 		Sound_MidFadeOutRate = 0.476,
 		
-		Sound_High = "simulated_vehicles/misc/v8high2.wav",
+		Sound_High = "vehicles/apc/apc_cruise_loop3.wav",
 		Sound_HighPitch = 1,
 		Sound_HighVolume = 0.75,
 		Sound_HighFadeInRPMpercent = 58,
@@ -624,14 +484,14 @@ local V = {
 		Sound_ThrottlePitch = 0,
 		Sound_ThrottleVolume = 0,
 		
-		snd_horn = "simulated_vehicles/horn_2.wav",
+		snd_horn = "simulated_vehicles/horn_5.wav", 
 		
 		DifferentialGear = 0.27,
 		Gears = {-0.09,0,0.09,0.18,0.28,0.35}
 	}
 }
 list.Set( "simfphys_vehicles", "sim_fphys_conscriptapc_armed", V )
-
+--]]
 if (!armedAPCSTable) then -- lets make sure we dont ruin all the spawned vehicles when reloading this luafile
 	armedAPCSTable = {}
 end
@@ -719,7 +579,7 @@ hook.Add("PlayerSpawnedVehicle","simfphys_armedvehicles", function( ply, vehicle
 end)
 
 local function GaussFire(ply,vehicle,shootOrigin,Attachment,damage)
-	vehicle:EmitSound("simulated_vehicles/weapons/tau_fire"..math.Round(math.random(1,4),0)..".wav")
+	vehicle:EmitSound("weapons/gauss/fire1.wav")
 	
 	local bullet = {}
 		bullet.Num 			= 1
@@ -1087,7 +947,7 @@ local function HandleAPCWeapons( vehicle )
 	
 	vehicle.NextShoot = curtime + 0.2
 	
-	vehicle:EmitSound("simulated_vehicles/weapons/apc_fire"..math.Round(math.random(1,4),0)..".wav")
+	vehicle:EmitSound("weapons/rpg/rocketfire1.wav")
 	
 	local bullet = {}
 		bullet.Num 			= 1
