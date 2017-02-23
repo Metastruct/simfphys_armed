@@ -1,6 +1,3 @@
-if (SERVER) then
-	resource.AddWorkshop("831680603")
-end
 
 local light_table = {	
 	ems_sounds = {"ambient/alarms/apc_alarm_loop1.wav"},
