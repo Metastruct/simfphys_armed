@@ -131,6 +131,34 @@ local V = {
 		SeatOffset = Vector(0,0,-2),
 		SeatPitch = 0,
 
+		PassengerSeats = {
+			{
+				pos = Vector(16,-36,16),
+				ang = Angle(0,0,0),
+				weapons = true,
+			},
+			{
+				pos = Vector(31 ,-98 ,42),
+				ang = Angle(0,180,0),
+				weapons = true,
+			},
+			{
+				pos = Vector(-31 ,-98 ,42),
+				ang = Angle(0,180,0),
+				weapons = true,
+			},
+		},
+		Attachments = {
+			{
+				model = "models/nova/jeep_seat.mdl",				
+				color = Color(255,255,255,255),
+				pos = Vector(16,-36,16),
+				ang = Angle(0,0,0),
+			},
+			
+		},
+		
+		
 		FrontHeight = 13.5,
 		FrontConstant = 27000,
 		FrontDamping = 2800,
@@ -221,6 +249,34 @@ local V = {
 		SeatOffset = Vector(0,0,-2),
 		SeatPitch = 0,
 
+		PassengerSeats = {
+			{
+				pos = Vector(16,-36,16),
+				ang = Angle(0,0,0),
+				weapons = true,
+			},
+			{
+				pos = Vector(31 ,-98 ,42),
+				ang = Angle(0,180,0),
+				weapons = true,
+			},
+			{
+				pos = Vector(-31 ,-98 ,42),
+				ang = Angle(0,180,0),
+				weapons = true,
+			},
+		},
+		Attachments = {
+			{
+				model = "models/nova/jeep_seat.mdl",				
+				color = Color(255,255,255,255),
+				pos = Vector(16,-36,16),
+				ang = Angle(0,0,0),
+			},
+			
+		},
+		
+		
 		FrontHeight = 13.5,
 		FrontConstant = 27000,
 		FrontDamping = 2800,
@@ -1214,7 +1270,7 @@ local function simfphyslerpView( ply, view )
 end
 
 hook.Add( "CalcView", "simfphys_gunner_view", function( ply, pos, ang )
-	if ( !IsValid( ply ) or !ply:Alive() or !ply:InVehicle() or ply:GetViewEntity() != ply ) then return end
+	if not ply:IsValid() or not ply:InVehicle() or not ply:Alive() or ply:GetViewEntity() ~= ply then return end
 	
 	local Vehicle = ply:GetVehicle()
 	
