@@ -1,7 +1,7 @@
 simWeapons = simWeapons or {}
 
 local function GaussFire(ply,vehicle,shootOrigin,Attachment,damage)
-	vehicle:EmitSound("simulated_vehicles/weapons/tau_fire"..math.Round(math.random(1,4),0)..".ogg")
+	vehicle:EmitSound("weapons/gauss/fire1.wav")
 	
 	local bullet = {}
 		bullet.Num 			= 1

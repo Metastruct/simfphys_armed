@@ -52,7 +52,7 @@ function simWeapons.humanAPC( ply, pod, vehicle )
 	
 	vehicle.NextShoot = curtime + 0.2
 	
-	vehicle:EmitSound("simulated_vehicles/weapons/apc_fire"..math.Round(math.random(1,4),0)..".ogg")
+	vehicle:EmitSound("weapons/airboat/airboat_gun_energy"..math.Round(math.random(1,2),0)..".wav")
 	
 	local bullet = {}
 		bullet.Num 			= 1
