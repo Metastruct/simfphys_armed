@@ -10,6 +10,9 @@ if not istable( armedELITEJEEPSTable2 ) then armedELITEJEEPSTable2 = {} end
 if not istable( armedJEEPSTable ) then armedJEEPSTable = {} end
 if not istable( armedJEEPSTable2 ) then armedJEEPSTable2 = {} end
 
+local 	armeddipripvehicles,armedAPCSTable,armedAPCSTable2,armedCombineAPCSTable,armedELITEJEEPSTable,armedELITEJEEPSTable2,armedJEEPSTable,armedJEEPSTable2 =
+		armeddipripvehicles,armedAPCSTable,armedAPCSTable2,armedCombineAPCSTable,armedELITEJEEPSTable,armedELITEJEEPSTable2,armedJEEPSTable,armedJEEPSTable2
+
 hook.Add("PlayerSpawnedVehicle","simfphys_armedvehicles", function( ply, vehicle )
 	timer.Simple( 0.2, function()
 		if not IsValid( vehicle ) then return end
