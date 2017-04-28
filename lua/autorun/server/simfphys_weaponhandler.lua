@@ -1,4 +1,3 @@
-resource.AddWorkshop("831680603")
 
 simWeapons = simWeapons or {}
 
