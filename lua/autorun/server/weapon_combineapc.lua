@@ -53,6 +53,8 @@ function simWeapons.combineAPC( ply, pod, vehicle )
 	local ID = vehicle:LookupAttachment( "muzzle" )
 	local Attachment = vehicle:GetAttachment( ID )
 	
+	Attachment = Attachment or {Ang=Angle(0,0,0),Pos=Vector(0,0,0)}
+	
 	vehicle.wOldPos = vehicle.wOldPos or Vector(0,0,0)
 	local deltapos = vehicle:GetPos() - vehicle.wOldPos
 	vehicle.wOldPos = vehicle:GetPos()

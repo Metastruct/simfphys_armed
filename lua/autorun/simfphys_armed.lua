@@ -534,42 +534,35 @@ local V = {
 
 local V = {
 	Name = "HL2 APC",
-	Model = "models/props_vehicles/apc001.mdl",
+	Model = "models/apc/apc.mdl",
 	Class = "gmod_sent_vehicle_fphysics_base",
 	Category = "Armed Vehicles",
-	SpawnOffset = Vector(0,0,50),
+	SpawnOffset = Vector(0,0,60),
 
 	Members = {
 		Mass = 4800,
+		
 		MaxHealth = 4500,
 		
-		EnginePos = Vector(-16.1,-81.68,47.25),
-		
 		IsArmored = true,
-
-		LightsTable = "conapc",
 		
-		CustomWheels = true,
-		CustomSuspensionTravel = 10,
+		LightsTable = "conapc_armed",
 		
-		CustomWheelModel = "models/props_vehicles/apc_tire001.mdl",
-		CustomWheelPosFL = Vector(-45,77,-22),
-		CustomWheelPosFR = Vector(45,77,-22),
-		CustomWheelPosRL = Vector(-45,-74,-22),
-		CustomWheelPosRR = Vector(45,-74,-22),
-		CustomWheelAngleOffset = Angle(0,180,0),
+		FrontWheelRadius = 32,
+		RearWheelRadius = 32,
 		
-		CustomMassCenter = Vector(0,0,0),
+		SeatOffset = Vector(375,-13,-58),
+		SeatPitch = 0,
 		
-		CustomSteerAngle = 35,
-		
-		SeatOffset = Vector(65,-13,50),
-		SeatPitch = 15,
-		SeatYaw = 0,
+		CustomMassCenter = Vector(0,0,-12),
 		
 		PassengerSeats = {
 			{
-				pos = Vector(13,75,-2),
+				pos = Vector(-17,0,17),
+				ang = Angle(0,0,0)
+			},
+			{
+				pos = Vector(-5,60,-3),
 				ang = Angle(0,0,0)
 			},
 		},
@@ -579,104 +572,117 @@ local V = {
 				model = "models/hunter/plates/plate075x105.mdl",
 				material = "lights/white",
 				color = Color(0,0,0,255),
-				pos = Vector(0.04,57.5,16.74),
-				ang = Angle(90,-90,0)
+				pos = Vector(0.04-18,57.5-15,16.74),
+				ang = Angle(90,-90,0),
+				nosolid = true
 			},
 			{
 				model = "models/hunter/plates/plate025x05.mdl",
 				material = "lights/white",
 				color = Color(0,0,0,255),
-				pos = Vector(-25.08,91.34,29.46),
-				ang = Angle(4.2,-109.19,68.43)
+				pos = Vector(-25.08-18,91.34-15,29.46),
+				ang = Angle(4.2,-109.19,68.43),
+				nosolid = true
 			},
 			{
-				pos = Vector(-24.63,77.76,8.65),
+				pos = Vector(-24.63-18,77.76-15,8.65),
 				ang = Angle(24.05,-12.81,-1.87),
 				model = "models/hunter/plates/plate05x1.mdl",
 				material = "lights/white",
-				color = Color(0,0,0,255)
+				color = Color(0,0,0,255),
+				nosolid = true
 			},
 			{
-				pos = Vector(24.63,77.76,8.65),
+				pos = Vector(24.63-18,77.76-15,8.65),
 				ang = Angle(24.05,-167.19,1.87),
 				model = "models/hunter/plates/plate05x1.mdl",
 				material = "lights/white",
-				color = Color(0,0,0,255)
+				color = Color(0,0,0,255),
+				nosolid = true
 			},
 			{
-				pos = Vector(-30.17,61.36,32.79),
+				pos = Vector(-30.17-18,61.36-15,32.79),
 				ang = Angle(-1.21,-92.38,-130.2),
 				model = "models/hunter/plates/plate025x05.mdl",
 				material = "lights/white",
-				color = Color(0,0,0,255)
+				color = Color(0,0,0,255),
+				nosolid = true
 			},
 			{
-				pos = Vector(30.17,61.36,32.79),
+				pos = Vector(30.17-18,61.36-15,32.79),
 				ang = Angle(-1.21,-87.62,130.2),
 				model = "models/hunter/plates/plate025x05.mdl",
 				material = "lights/white",
-				color = Color(0,0,0,255)
+				color = Color(0,0,0,255),
+				nosolid = true
 			},
 			{
-				pos = Vector(0,72.92,40.54),
+				pos = Vector(-18,72.92-15,40.54),
 				ang = Angle(0,-180,0.79),
 				model = "models/hunter/plates/plate1x1.mdl",
 				material = "lights/white",
-				color = Color(0,0,0,255)
+				color = Color(0,0,0,255),
+				nosolid = true
 			},
 			{
-				pos = Vector(25.08,91.34,29.46),
+				pos = Vector(25.08-18,91.34-15,29.46),
 				ang = Angle(4.2,-70.81,-68.43),
 				model = "models/hunter/plates/plate025x05.mdl",
 				material = "lights/white",
-				color = Color(0,0,0,255)
+				color = Color(0,0,0,255),
+				nosolid = true
 			},
 			{
-				pos = Vector(-29.63,79.02,19.28),
+				pos = Vector(-29.63-18,79.02-15,19.28),
 				ang = Angle(90,-18,0),
 				model = "models/hunter/plates/plate05x1.mdl",
 				material = "lights/white",
-				color = Color(0,0,0,255)
+				color = Color(0,0,0,255),
+				nosolid = true
 			},
 			{
-				pos = Vector(29.63,79.02,19.28),
+				pos = Vector(29.63-18,79.02-15,19.28),
 				ang = Angle(90,-162,0),
 				model = "models/hunter/plates/plate05x1.mdl",
 				material = "lights/white",
-				color = Color(0,0,0,255)
+				color = Color(0,0,0,255),
+				nosolid = true
 			},
 			{
-				pos = Vector(0,75.33,5.91),
+				pos = Vector(-18,75.33-15,5.91),
 				ang = Angle(0,0,0),
 				model = "models/hunter/plates/plate1x1.mdl",
 				material = "lights/white",
-				color = Color(0,0,0,255)
+				color = Color(0,0,0,255),
+				nosolid = true
 			},
 			{
-				pos = Vector(0,98.02,35.74),
+				pos = Vector(-18,98.02-15,35.74),
 				ang = Angle(63,90,0),
 				model = "models/hunter/plates/plate025x025.mdl",
 				material = "lights/white",
-				color = Color(0,0,0,255)
+				color = Color(0,0,0,255),
+				nosolid = true
 			},
 			{
-				pos = Vector(0,100.55,7.41),
+				pos = Vector(-18,100.55-15,7.41),
 				ang = Angle(90,-90,0),
 				model = "models/hunter/plates/plate1x1.mdl",
 				material = "lights/white",
-				color = Color(0,0,0,255)
+				color = Color(0,0,0,255),
+				nosolid = true
 			}
 		},
 		
-		FrontHeight = 20,
+		FrontHeight = 22,
 		FrontConstant = 50000,
 		FrontDamping = 4000,
-		FrontRelativeDamping = 3000,
+		FrontRelativeDamping = 4000,
 		
-		RearHeight = 20,
+		RearHeight = 22,
 		RearConstant = 50000,
 		RearDamping = 4000,
-		RearRelativeDamping = 3000,
+		RearRelativeDamping = 4000,
 		
 		FastSteeringAngle = 10,
 		SteeringFadeFastSpeed = 535,
@@ -701,16 +707,16 @@ local V = {
 		
 		EngineSoundPreset = 0,
 		
-		Sound_Idle = "vehicles/v8/v8_idle_loop1.wav",
+		Sound_Idle = "simulated_vehicles/misc/Nanjing_loop.wav",
 		Sound_IdlePitch = 1,
 		
-		Sound_Mid = "vehicles/v8/second.wav",
+		Sound_Mid = "simulated_vehicles/misc/m50.wav",
 		Sound_MidPitch = 1,
 		Sound_MidVolume = 1,
 		Sound_MidFadeOutRPMpercent = 58,
 		Sound_MidFadeOutRate = 0.476,
 		
-		Sound_High = "vehicles/v8/third.wav",
+		Sound_High = "simulated_vehicles/misc/v8high2.wav",
 		Sound_HighPitch = 1,
 		Sound_HighVolume = 0.75,
 		Sound_HighFadeInRPMpercent = 58,
@@ -720,7 +726,7 @@ local V = {
 		Sound_ThrottlePitch = 0,
 		Sound_ThrottleVolume = 0,
 		
-		snd_horn = "simulated_vehicles/horn_5.wav",
+		snd_horn = "simulated_vehicles/horn_2.wav",
 		
 		DifferentialGear = 0.27,
 		Gears = {-0.09,0,0.09,0.18,0.28,0.35}
