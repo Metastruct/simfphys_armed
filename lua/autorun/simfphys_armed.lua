@@ -534,7 +534,7 @@ local V = {
 
 local V = {
 	Name = "HL2 APC",
-	Model = "models/apc/apc.mdl",
+	Model = "models/props_vehicles/apc001.mdl",
 	Class = "gmod_sent_vehicle_fphysics_base",
 	Category = "Armed Vehicles",
 	SpawnOffset = Vector(0,0,60),
