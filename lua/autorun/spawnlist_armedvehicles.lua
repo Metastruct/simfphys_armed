@@ -4,35 +4,34 @@ local light_table = {
 list.Set( "simfphys_lights", "capc_siren", light_table)
 
 local light_table = {
-	L_HeadLampPos = Vector(71.9,32.85,-5.59),
-	L_HeadLampAng = Angle(15,0,0),
-	R_HeadLampPos = Vector(71.9,-32.85,-5.59),
-	R_HeadLampAng = Angle(15,0,0),
-
-	L_RearLampPos =Vector(-94,29.08,3.7),
-	L_RearLampAng = Angle(40,180,0),
-	R_RearLampPos = Vector(-94,-29.08,3.7),
-	R_RearLampAng = Angle(40,180,0),
+	L_HeadLampPos = Vector(20.15,133,21),
+	L_HeadLampAng = Angle(15,90,0),
+	R_HeadLampPos = Vector(-54.51,133,21),
+	R_HeadLampAng = Angle(15,90,0),
+	
+	L_RearLampPos = Vector(-62.74,-161,27),
+	L_RearLampAng = Angle(40,-90,0),
+	R_RearLampPos = Vector(28.33,-161,27),
+	R_RearLampAng = Angle(40,-90,0),
 	
 	Headlight_sprites = { 
-		Vector(71.9,32.85,-5.59),
-		Vector(71.9,-32.85,-5.59)
+		Vector(29.15,133,21),
+		Vector(-63.66,133,21),
 	},
 	Headlamp_sprites = { 
-		Vector(76.36,26.72,-5.79),
-		Vector(76.36,-26.72,-5.79)
+		Vector(20.15,133,21),
+		Vector(-54.51,133,21),
 	},
 	Rearlight_sprites = {
-		Vector(-94,34.39,3.7),
-		Vector(-94,-34.39,3.7)
+		Vector(-62.74,-161,27),
+		Vector(28.33,-161,27)
 	},
 	Brakelight_sprites = {
-		Vector(-94,29.08,3.7),
-		Vector(-94,-29.08,3.7)
+		Vector(-62.74,-161,27),
+		Vector(28.33,-161,27)
 	}
 }
-list.Set( "simfphys_lights", "driprip_ratmobile", light_table)
-
+list.Set( "simfphys_lights", "conapc_armed", light_table)
 
 local V = {
 	Name = "HL2 Combine APC",
@@ -93,10 +92,10 @@ local V = {
 		
 		EngineSoundPreset = 0,
 		
-		Sound_Idle = "simulated_vehicles/c_apc/apc_idle.wav",
+		Sound_Idle = "vehicles/apc/apc_idle1.wav",
 		Sound_IdlePitch = 1,
 		
-		Sound_Mid = "simulated_vehicles/c_apc/apc_mid.wav",
+		Sound_Mid = "vehicles/apc/apc_firstgear_loop1.wav",
 		Sound_MidPitch = 1,
 		Sound_MidVolume = 1,
 		Sound_MidFadeOutRPMpercent = 100,
@@ -133,6 +132,34 @@ local V = {
 		SeatOffset = Vector(0,0,-2),
 		SeatPitch = 0,
 
+		PassengerSeats = {
+			{
+				pos = Vector(16,-36,16),
+				ang = Angle(0,0,0),
+				weapons = true,
+			},
+			{
+				pos = Vector(31 ,-98 ,42),
+				ang = Angle(0,180,0),
+				weapons = true,
+			},
+			{
+				pos = Vector(-31 ,-98 ,42),
+				ang = Angle(0,180,0),
+				weapons = true,
+			},
+		},
+		Attachments = {
+			{
+				model = "models/nova/jeep_seat.mdl",				
+				color = Color(255,255,255,255),
+				pos = Vector(16,-36,16),
+				ang = Angle(0,0,0),
+			},
+			
+		},
+		
+		
 		FrontHeight = 13.5,
 		FrontConstant = 27000,
 		FrontDamping = 2800,
@@ -169,17 +196,38 @@ local V = {
 		EngineSoundPreset = -1,
 		
 		snd_pitch = 1,
-		snd_idle = "simulated_vehicles/jeep/jeep_idle.wav",
+		snd_idle = "vehicles/v8/v8_idle_loop1.wav",
 		
-		snd_low = "simulated_vehicles/jeep/jeep_low.wav",
-		snd_low_revdown = "simulated_vehicles/jeep/jeep_revdown.wav",
+		snd_low = "vehicles/v8/first.wav",
+		snd_low_revdown = "vehicles/v8/v8_throttle_off_fast_loop1.wav",
 		snd_low_pitch = 0.9,
 		
-		snd_mid = "simulated_vehicles/jeep/jeep_mid.wav",
-		snd_mid_gearup = "simulated_vehicles/jeep/jeep_second.wav",
+		snd_mid = "vehicles/v8/second.wav",
+		snd_mid_gearup = "vehicles/v8/v8_firstgear_rev_loop1.wav",
+
 		snd_mid_pitch = 1,
+
+		Sound_Idle = "vehicles/v8/v8_idle_loop1.wav",
+		Sound_IdlePitch = 1,
 		
-		snd_horn = "simulated_vehicles/horn_1.wav",
+		Sound_Mid = "vehicles/v8/second.wav",
+		Sound_MidPitch = 1,
+		Sound_MidVolume = 1,
+		Sound_MidFadeOutRPMpercent = 58,
+		Sound_MidFadeOutRate = 0.476,
+		
+		Sound_High = "vehicles/v8/third.wav",
+		Sound_HighPitch = 1,
+		Sound_HighVolume = 0.75,
+		Sound_HighFadeInRPMpercent = 58,
+		Sound_HighFadeInRate = 0.19,
+		
+		Sound_Throttle = "",
+		Sound_ThrottlePitch = 0,
+		Sound_ThrottleVolume = 0,
+		--
+		
+		snd_horn = "simulated_vehicles/horn_5.wav", 
 		
 		ForceTransmission = 1,
 		DifferentialGear = 0.3,
@@ -206,6 +254,34 @@ local V = {
 		SeatOffset = Vector(0,0,-2),
 		SeatPitch = 0,
 
+		PassengerSeats = {
+			{
+				pos = Vector(16,-36,16),
+				ang = Angle(0,0,0),
+				weapons = true,
+			},
+			{
+				pos = Vector(31 ,-98 ,42),
+				ang = Angle(0,180,0),
+				weapons = true,
+			},
+			{
+				pos = Vector(-31 ,-98 ,42),
+				ang = Angle(0,180,0),
+				weapons = true,
+			},
+		},
+		Attachments = {
+			{
+				model = "models/nova/jeep_seat.mdl",				
+				color = Color(255,255,255,255),
+				pos = Vector(16,-36,16),
+				ang = Angle(0,0,0),
+			},
+			
+		},
+		
+		
 		FrontHeight = 13.5,
 		FrontConstant = 27000,
 		FrontDamping = 2800,
@@ -242,17 +318,38 @@ local V = {
 		EngineSoundPreset = -1,
 		
 		snd_pitch = 1,
-		snd_idle = "simulated_vehicles/jeep/jeep_idle.wav",
+		snd_idle = "vehicles/v8/v8_idle_loop1.wav",
 		
-		snd_low = "simulated_vehicles/jeep/jeep_low.wav",
-		snd_low_revdown = "simulated_vehicles/jeep/jeep_revdown.wav",
+		snd_low = "vehicles/v8/first.wav",
+		snd_low_revdown = "vehicles/v8/v8_throttle_off_fast_loop1.wav",
 		snd_low_pitch = 0.9,
 		
-		snd_mid = "simulated_vehicles/jeep/jeep_mid.wav",
-		snd_mid_gearup = "simulated_vehicles/jeep/jeep_second.wav",
+		snd_mid = "vehicles/v8/second.wav",
+		snd_mid_gearup = "vehicles/v8/v8_firstgear_rev_loop1.wav",
+
 		snd_mid_pitch = 1,
+
+		Sound_Idle = "vehicles/v8/v8_idle_loop1.wav",
+		Sound_IdlePitch = 1,
 		
-		snd_horn = "simulated_vehicles/horn_1.wav",
+		Sound_Mid = "vehicles/v8/second.wav",
+		Sound_MidPitch = 1,
+		Sound_MidVolume = 1,
+		Sound_MidFadeOutRPMpercent = 58,
+		Sound_MidFadeOutRate = 0.476,
+		
+		Sound_High = "vehicles/v8/third.wav",
+		Sound_HighPitch = 1,
+		Sound_HighVolume = 0.75,
+		Sound_HighFadeInRPMpercent = 58,
+		Sound_HighFadeInRate = 0.19,
+		
+		Sound_Throttle = "",
+		Sound_ThrottlePitch = 0,
+		Sound_ThrottleVolume = 0,
+		--
+		
+		snd_horn = "simulated_vehicles/horn_5.wav", 
 		
 		ForceTransmission = 1,
 		DifferentialGear = 0.3,
@@ -354,7 +451,7 @@ local V = {
 		Gears = {-0.1,0,0.1,0.18,0.25,0.31,0.40}
 	}
 }
-list.Set( "simfphys_vehicles", "sim_fphys_v8elite_armed", V )
+--list.Set( "simfphys_vehicles", "sim_fphys_v8elite_armed", V )
 
 
 local V = {
@@ -449,15 +546,15 @@ local V = {
 		Gears = {-0.1,0,0.1,0.18,0.25,0.31,0.40}
 	}
 }
-list.Set( "simfphys_vehicles", "sim_fphys_v8elite_armed2", V )
+--list.Set( "simfphys_vehicles", "sim_fphys_v8elite_armed2", V )
 
 
 local V = {
 	Name = "HL2 APC",
-	Model = "models/blu/conscript_apc.mdl",
+	Model = "models/props_vehicles/apc001.mdl",
 	Class = "gmod_sent_vehicle_fphysics_base",
 	Category = "Armed Vehicles",
-	SpawnOffset = Vector(0,0,50),
+	SpawnOffset = Vector(0,0,60),
 
 	Members = {
 		Mass = 4800,
@@ -817,7 +914,7 @@ local V = {
 		Gears = {-0.1,0,0.1,0.2,0.3,0.4,0.5}
 	}
 }
-list.Set( "simfphys_vehicles", "sim_fphys_ratmobile", V )
+--list.Set( "simfphys_vehicles", "sim_fphys_ratmobile", V )
 
 
 local V = {
@@ -948,7 +1045,7 @@ local V = {
 		Gears = {-0.1,0,0.1,0.2,0.3,0.4,0.5}
 	}
 }
-list.Set( "simfphys_vehicles", "sim_fphys_chaos126p", V )
+--list.Set( "simfphys_vehicles", "sim_fphys_chaos126p", V )
 
 
 local V = {
@@ -1078,7 +1175,7 @@ local V = {
 		Gears = {-0.1,0,0.1,0.2,0.3,0.4,0.5}
 	}
 }
-list.Set( "simfphys_vehicles", "sim_fphys_hedgehog", V )
+--list.Set( "simfphys_vehicles", "sim_fphys_hedgehog", V )
 
 
 local V = {
@@ -1231,7 +1328,7 @@ local V = {
 		Gears = {-0.1,0,0.05,0.07,0.09,0.11,0.13,0.16}
 	}
 }
-list.Set( "simfphys_vehicles", "sim_fphys_tank", V )
+--list.Set( "simfphys_vehicles", "sim_fphys_tank", V )
 
 
 
@@ -1368,4 +1465,4 @@ local V = {
 		Gears = {-0.1,0,0.05,0.08,0.11,0.14,0.17}
 	}
 }
-list.Set( "simfphys_vehicles", "sim_fphys_tank2", V )
+--list.Set( "simfphys_vehicles", "sim_fphys_tank2", V )
