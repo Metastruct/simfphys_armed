@@ -36,12 +36,20 @@ end
 
 function simfphys.weapon:Initialize( vehicle )
 	local data = {}
+	
 	data.Attachment = "muzzle_left"
 	data.Direction = Vector(1,0,0)
 	data.Attach_Start_Left = "muzzle_right"
 	data.Attach_Start_Right = "muzzle_left"
 	data.Type = 3
 
+	local ID = vehicle:LookupAttachment( "muzzle_left" )
+	if not ID or ID==0 then
+		data.Attachment = "muzzle"
+		data.Attach_Start_Left = "muzzle"
+		data.Attach_Start_Right = "muzzle"
+	end
+	
 	simfphys.RegisterCrosshair( vehicle:GetDriverSeat(), data )
 	simfphys.RegisterCamera( vehicle:GetDriverSeat(), Vector(13,45,50), Vector(13,45,50), true )
 	
@@ -60,6 +68,7 @@ function simfphys.weapon:AimWeapon( ply, vehicle, pod )
 	if not ID or ID==0 then
 		ID = vehicle:LookupAttachment( "muzzle" )
 	end
+	if not ID or ID==0 then return end
 	
 	local Attachment = vehicle:GetAttachment( ID )
 	
