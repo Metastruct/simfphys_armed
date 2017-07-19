@@ -57,6 +57,10 @@ function simfphys.weapon:AimWeapon( ply, vehicle, pod )
 	if not IsValid( pod ) then return end
 
 	local ID = vehicle:LookupAttachment( "muzzle_left" )
+	if not ID or ID==0 then
+		ID = vehicle:LookupAttachment( "muzzle" )
+	end
+	
 	local Attachment = vehicle:GetAttachment( ID )
 	
 	local Aimang = pod:WorldToLocalAngles( ply:EyeAngles() )
