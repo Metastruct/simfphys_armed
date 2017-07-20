@@ -144,7 +144,8 @@ function simfphys.weapon:PrimaryAttack( vehicle, ply )
 	
 	local AttachmentID = vehicle.swapMuzzle and vehicle:LookupAttachment( "muzzle_right" ) or vehicle:LookupAttachment( "muzzle_left" )
 	local Attachment = vehicle:GetAttachment( AttachmentID )
-	
+	if not Attachment or nil == next(Attachment) then Attachment={Pos=vehicle:GetPos(),Ang=vehicle:Forward()} end
+		
 	local shootOrigin = Attachment.Pos + deltapos * engine.TickInterval()
 	local shootDirection = Attachment.Ang:Forward()
 	
