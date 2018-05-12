@@ -2,6 +2,8 @@ local next_think = 0
 local next_find = 0
 local tigers = {}
 local shermans = {}
+local leopards = {}
+local t90s = {}
 
 local function TigersGetAll()
 	local tiger_tanks = {}
@@ -15,6 +17,34 @@ local function TigersGetAll()
 	end
 	
 	return tiger_tanks 
+end
+
+local function LeopardsGetAll()
+	local leopard_tanks = {}
+	
+	for i, ent in pairs( ents.FindByClass( "gmod_sent_vehicle_fphysics_base" ) ) do
+		local class = ent:GetSpawn_List()
+		
+		if class == "sim_fphys_tank3" then
+			table.insert(leopard_tanks, ent)
+		end
+	end
+	
+	return leopard_tanks 
+end
+
+local function T90sGetAll()
+	local t90_tanks = {}
+	
+	for i, ent in pairs( ents.FindByClass( "gmod_sent_vehicle_fphysics_base" ) ) do
+		local class = ent:GetSpawn_List()
+		
+		if class == "sim_fphys_tank4" then
+			table.insert(t90_tanks, ent)
+		end
+	end
+	
+	return t90_tanks 
 end
 
 local function ShermansGetAll()
@@ -31,61 +61,30 @@ local function ShermansGetAll()
 	return sherman_tanks
 end
 
-local function GetTrackDelta( ent )
-	ent.Old_Delta_L = ent.Old_Delta_L and ent.Old_Delta_L or 0
-	ent.Old_Delta_R = ent.Old_Delta_R and ent.Old_Delta_R or 0
-	
-	ent.Pose_L = ent:GetPoseParameter( "spin_wheels_left" )
-	ent.Pose_R = ent:GetPoseParameter( "spin_wheels_right" )
-	
-	ent.OldPose_L = ent.OldPose_L and ent.OldPose_L or ent.Pose_L
-	ent.OldPose_R = ent.OldPose_R and ent.OldPose_R or ent.Pose_R
-	
-	local Pose_L_Delta = ent.OldPose_L - ent.Pose_L
-	local Pose_R_Delta = ent.OldPose_R - ent.Pose_R
-	
-	if Pose_L_Delta > 0.5 or Pose_L_Delta < -0.5 then
-		Pose_L_Delta = ent.Old_Delta_L
-	end
-	
-	if Pose_R_Delta > 0.5 or Pose_R_Delta < -0.5 then
-		Pose_R_Delta = ent.Old_Delta_R
-	end
-	
-	ent.OldPose_L = ent.Pose_L
-	ent.OldPose_R = ent.Pose_R
-	
-	ent.Old_Delta_L = Pose_L_Delta
-	ent.Old_Delta_R = Pose_R_Delta
-	
-	return {Left = Pose_L_Delta, Right = Pose_R_Delta}
-end
 
-local function GetTrackPos( ent, mul, smoother )
-	local wheelsLocked = ent:GetHandBrakeEnabled()
-	local TrackDelta = GetTrackDelta( ent )
+local function GetTrackPos( ent, div, smoother )
+	local FT =  FrameTime()
+	local spin_left = ent.trackspin_l and (-ent.trackspin_l / div) or 0
+	local spin_right = ent.trackspin_r and (-ent.trackspin_r / div) or 0
 	
-	ent.sm_TrackDelta_L = wheelsLocked and 0 or (ent.sm_TrackDelta_L and (ent.sm_TrackDelta_L + (TrackDelta.Left * mul - ent.sm_TrackDelta_L) * smoother) or 0)
-	ent.sm_TrackDelta_R = wheelsLocked and 0 or (ent.sm_TrackDelta_R and (ent.sm_TrackDelta_R + (TrackDelta.Right * mul - ent.sm_TrackDelta_R) * smoother) or 0)
-	
-	ent.TrackPos_L = ent.TrackPos_L and (ent.TrackPos_L + ent.sm_TrackDelta_L) or 0
-	ent.TrackPos_R = ent.TrackPos_R and (ent.TrackPos_R + ent.sm_TrackDelta_R) or 0
-	
-	return {Left = ent.TrackPos_L,Right = ent.TrackPos_R}
+	ent.sm_TrackDelta_L = ent.sm_TrackDelta_L and (ent.sm_TrackDelta_L + (spin_left - ent.sm_TrackDelta_L) * smoother) or 0
+	ent.sm_TrackDelta_R = ent.sm_TrackDelta_R and (ent.sm_TrackDelta_R + (spin_right- ent.sm_TrackDelta_R) * smoother) or 0
+
+	return {Left = ent.sm_TrackDelta_L,Right = ent.sm_TrackDelta_R}
 end
 
 local function UpdateTigerScrollTexture( ent )
 	local id = ent:EntIndex()
 
 	if not ent.wheel_left_mat then
-		ent.wheel_left_mat = CreateMaterial("trackmat_"..id.."_left", "VertexLitGeneric", { ["$basetexture"] = "models/blu/track", ["$translate"] = "[0.0 0.0 0.0]", ["Proxies"] = { ["TextureTransform"] = { ["translateVar"] = "$translate", ["centerVar"]    = "$center",["resultVar"]    = "$basetexturetransform", } } } )
+		ent.wheel_left_mat = CreateMaterial("trackmat_"..id.."_left", "VertexLitGeneric", { ["$basetexture"] = "models/blu/track", ["$alphatest"] = "1", ["$translate"] = "[0.0 0.0 0.0]", ["Proxies"] = { ["TextureTransform"] = { ["translateVar"] = "$translate", ["centerVar"]    = "$center",["resultVar"]    = "$basetexturetransform", } } } )
 	end
 
 	if not ent.wheel_right_mat then
-		ent.wheel_right_mat = CreateMaterial("trackmat_"..id.."_right", "VertexLitGeneric", { ["$basetexture"] = "models/blu/track", ["$translate"] = "[0.0 0.0 0.0]", ["Proxies"] = { ["TextureTransform"] = { ["translateVar"] = "$translate", ["centerVar"]    = "$center",["resultVar"]    = "$basetexturetransform", } } } )
+		ent.wheel_right_mat = CreateMaterial("trackmat_"..id.."_right", "VertexLitGeneric", { ["$basetexture"] = "models/blu/track", ["$alphatest"] = "1", ["$translate"] = "[0.0 0.0 0.0]", ["Proxies"] = { ["TextureTransform"] = { ["translateVar"] = "$translate", ["centerVar"]    = "$center",["resultVar"]    = "$basetexturetransform", } } } )
 	end
 	
-	local TrackPos = GetTrackPos( ent, 3.2, 0.5 )
+	local TrackPos = GetTrackPos( ent, 100, 0.5 )
 	
 	ent.wheel_left_mat:SetVector("$translate", Vector(0,TrackPos.Left,0) )
 	ent.wheel_right_mat:SetVector("$translate", Vector(0,TrackPos.Right,0) )
@@ -98,20 +97,59 @@ local function UpdateShermanScrollTexture( ent )
 	local id = ent:EntIndex()
 
 	if not ent.wheel_left_mat then
-		ent.wheel_left_mat = CreateMaterial("s_trackmat_"..id.."_left", "VertexLitGeneric", { ["$basetexture"] = "models/blu/track_sherman", ["$translate"] = "[0.0 0.0 0.0]", ["Proxies"] = { ["TextureTransform"] = { ["translateVar"] = "$translate", ["centerVar"]    = "$center",["resultVar"]    = "$basetexturetransform", } } } )
+		ent.wheel_left_mat = CreateMaterial("s_trackmat_"..id.."_left", "VertexLitGeneric", { ["$basetexture"] = "models/blu/track_sherman", ["$alphatest"] = "1", ["$translate"] = "[0.0 0.0 0.0]", ["Proxies"] = { ["TextureTransform"] = { ["translateVar"] = "$translate", ["centerVar"]    = "$center",["resultVar"]    = "$basetexturetransform", } } } )
 	end
 
 	if not ent.wheel_right_mat then
-		ent.wheel_right_mat = CreateMaterial("s_trackmat_"..id.."_right", "VertexLitGeneric", { ["$basetexture"] = "models/blu/track_sherman", ["$translate"] = "[0.0 0.0 0.0]", ["Proxies"] = { ["TextureTransform"] = { ["translateVar"] = "$translate", ["centerVar"]    = "$center",["resultVar"]    = "$basetexturetransform", } } } )
+		ent.wheel_right_mat = CreateMaterial("s_trackmat_"..id.."_right", "VertexLitGeneric", { ["$basetexture"] = "models/blu/track_sherman", ["$alphatest"] = "1", ["$translate"] = "[0.0 0.0 0.0]", ["Proxies"] = { ["TextureTransform"] = { ["translateVar"] = "$translate", ["centerVar"]    = "$center",["resultVar"]    = "$basetexturetransform", } } } )
 	end
 	
-	local TrackPos = GetTrackPos( ent, 1.5, 0.25 )
+	local TrackPos = GetTrackPos( ent, 350, 0.25 )
 	
 	ent.wheel_left_mat:SetVector("$translate", Vector(0,TrackPos.Left,0) )
 	ent.wheel_right_mat:SetVector("$translate", Vector(0,TrackPos.Right,0) )
 
 	ent:SetSubMaterial( 1, "!s_trackmat_"..id.."_left" ) 
 	ent:SetSubMaterial( 2, "!s_trackmat_"..id.."_right" )
+end
+
+local function UpdateLeopardScrollTexture( ent )
+	local id = ent:EntIndex()
+
+	if not ent.wheel_left_mat then
+		ent.wheel_left_mat = CreateMaterial("l_trackmat_"..id.."_left", "VertexLitGeneric", { ["$basetexture"] = "models/blu/track_leopard", ["$alphatest"] = "1",  ["$translate"] = "[0.0 0.0 0.0]", ["Proxies"] = { ["TextureTransform"] = { ["translateVar"] = "$translate", ["centerVar"]    = "$center",["resultVar"]    = "$basetexturetransform", } } } )
+	end
+
+	if not ent.wheel_right_mat then
+		ent.wheel_right_mat = CreateMaterial("l_trackmat_"..id.."_right", "VertexLitGeneric", { ["$basetexture"] = "models/blu/track_leopard", ["$alphatest"] = "1", ["$translate"] = "[0.0 0.0 0.0]", ["Proxies"] = { ["TextureTransform"] = { ["translateVar"] = "$translate", ["centerVar"]    = "$center",["resultVar"]    = "$basetexturetransform", } } } )
+	end
+	
+	local TrackPos = GetTrackPos( ent, 90, 0.25 )
+	ent.wheel_left_mat:SetVector("$translate", Vector(0,TrackPos.Left,0) )
+	ent.wheel_right_mat:SetVector("$translate", Vector(0,TrackPos.Right,0) )
+
+	ent:SetSubMaterial( 4, "!l_trackmat_"..id.."_left" ) 
+	ent:SetSubMaterial( 3, "!l_trackmat_"..id.."_right" )
+end
+
+
+local function UpdateT90ScrollTexture( ent )
+	local id = ent:EntIndex()
+
+	if not ent.wheel_left_mat then
+		ent.wheel_left_mat = CreateMaterial("t90_trackmat_"..id.."_left", "VertexLitGeneric", { ["$basetexture"] = "models/blu/t90ms/t90ms_track_a_c", ["$alphatest"] = "1",  ["$translate"] = "[0.0 0.0 0.0]", ["Proxies"] = { ["TextureTransform"] = { ["translateVar"] = "$translate", ["centerVar"]    = "$center",["resultVar"]    = "$basetexturetransform", } } } )
+	end
+
+	if not ent.wheel_right_mat then
+		ent.wheel_right_mat = CreateMaterial("t90_trackmat_"..id.."_right", "VertexLitGeneric", { ["$basetexture"] = "models/blu/t90ms/t90ms_track_a_c", ["$alphatest"] = "1", ["$translate"] = "[0.0 0.0 0.0]", ["Proxies"] = { ["TextureTransform"] = { ["translateVar"] = "$translate", ["centerVar"]    = "$center",["resultVar"]    = "$basetexturetransform", } } } )
+	end
+	
+	local TrackPos = GetTrackPos( ent, 80, 0.25 )
+	ent.wheel_left_mat:SetVector("$translate", Vector(0,TrackPos.Left,0) )
+	ent.wheel_right_mat:SetVector("$translate", Vector(0,TrackPos.Right,0) )
+
+	ent:SetSubMaterial( 2, "!t90_trackmat_"..id.."_left" ) 
+	ent:SetSubMaterial( 1, "!t90_trackmat_"..id.."_right" )
 end
 
 local function UpdateTracks()
@@ -134,6 +172,26 @@ local function UpdateTracks()
 			end
 		end
 	end
+	
+	if leopards then
+		for index, ent in pairs( leopards ) do
+			if IsValid( ent ) then
+				UpdateLeopardScrollTexture( ent )
+			else
+				leopards[index] = nil
+			end
+		end
+	end
+	
+	if t90s then
+		for index, ent in pairs( t90s ) do
+			if IsValid( ent ) then
+				UpdateT90ScrollTexture( ent )
+			else
+				t90s[index] = nil
+			end
+		end
+	end
 end
 
 net.Receive( "simfphys_register_tank", function( length )
@@ -147,11 +205,19 @@ net.Receive( "simfphys_register_tank", function( length )
 		
 	elseif type == "sherman" then
 		table.insert(shermans, tank)
+		
+	elseif type == "leopard" then
+		table.insert(leopards, tank)
+		
+	elseif type == "t90ms" then
+		table.insert(t90s, tank)
 	end
 end)
 
 net.Receive( "simfphys_tank_do_effect", function( length )
 	local tank = net.ReadEntity()
+	if not IsValid( tank ) then return end
+	
 	local effect = net.ReadString()
 	
 	if effect == "Muzzle" then
@@ -163,6 +229,12 @@ net.Receive( "simfphys_tank_do_effect", function( length )
 		local effectdata = EffectData()
 			effectdata:SetEntity( tank )
 		util.Effect( "simfphys_sherman_muzzle", effectdata )
+		
+	elseif effect == "Muzzle3" then
+		local effectdata = EffectData()
+			effectdata:SetEntity( tank )
+		util.Effect( "simfphys_leopard_muzzle", effectdata )
+		
 		
 	elseif effect == "Explosion" then
 		local effectdata = EffectData()
@@ -176,14 +248,36 @@ net.Receive( "simfphys_tank_do_effect", function( length )
 	end
 end)
 
+net.Receive( "simfphys_update_tracks", function( length )
+	local tank = net.ReadEntity()
+	if not IsValid( tank ) then return end
+	
+	tank.trackspin_r = net.ReadFloat() 
+	tank.trackspin_l = net.ReadFloat() 
+	
+end)
+
+local NumCycl = 0
 hook.Add( "Think", "simfphys_manage_tanks", function()
 	local curtime = CurTime()
 	
 	if curtime > next_find then
-		next_find = curtime + 60
+		next_find = curtime + 30
 		
-		tigers = TigersGetAll()
-		shermans = ShermansGetAll()
+		NumCycl = NumCycl + 1
+		if NumCycl == 1 then
+			tigers = TigersGetAll()
+			
+		elseif NumCycl == 2 then
+			shermans = ShermansGetAll()
+		
+		elseif NumCycl >= 3 then
+			leopards = LeopardsGetAll()
+			
+		elseif NumCycl >= 4 then
+			t90s = T90sGetAll()
+			NumCycl = 0
+		end
 	end
 	
 	if curtime > next_think then
