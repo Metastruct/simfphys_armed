@@ -1653,7 +1653,7 @@ local V = {
 		Supercharged = false,
 		DoNotStall = true,
 		
-		FuelFillPos = Vector(-111.88,-0.14,59.15),
+		FuelFillPos = Vector(-53.14,-143.23,71.42),
 		FuelType = FUELTYPE_DIESEL,
 		FuelTankSize = 220,
 		
@@ -1806,7 +1806,7 @@ local V = {
 		Supercharged = false,
 		DoNotStall = true,
 		
-		FuelFillPos = Vector(-111.88,-0.14,59.15),
+		FuelFillPos = Vector(139.42,-3.68,38.38),
 		FuelType = FUELTYPE_DIESEL,
 		FuelTankSize = 220,
 		
