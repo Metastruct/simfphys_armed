@@ -13,32 +13,29 @@ for i = 1,8 do
 end
 
 local function mg_fire(ply,vehicle,shootOrigin,shootDirection)
-
-	vehicle:EmitSound("tiger_fire_mg")
+	vehicle:EmitSound("tiger_fire_mg_new")
 	
 	local projectile = {}
 		projectile.filter = vehicle.VehicleData["filter"]
 		projectile.shootOrigin = shootOrigin
 		projectile.shootDirection = shootDirection
 		projectile.attacker = ply
-		projectile.Tracer	= 2
-		projectile.Spread = Vector(0.01,0.01,0.01)
+		projectile.Tracer	= 1
+		projectile.Spread = Vector(0.015,0.015,0.015)
 		projectile.HullSize = 5
 		projectile.attackingent = vehicle
-		projectile.Damage = 30
+		projectile.Damage = 20
 		projectile.Force = 12
 	simfphys.FireHitScan( projectile )
-	
 end
 
 local function cannon_fire(ply,vehicle,shootOrigin,shootDirection)
 	vehicle:EmitSound("tiger_fire")
 	vehicle:EmitSound("tiger_reload")
 	
-	net.Start( "simfphys_tank_do_effect" )
-		net.WriteEntity( vehicle )
-		net.WriteString( "Muzzle" )
-	net.Broadcast()
+	local effectdata = EffectData()
+		effectdata:SetEntity( vehicle )
+	util.Effect( "simfphys_tiger_muzzle", effectdata )
 	
 	vehicle:GetPhysicsObject():ApplyForceOffset( -shootDirection * 400000, shootOrigin ) 
 	
@@ -51,8 +48,9 @@ local function cannon_fire(ply,vehicle,shootOrigin,shootDirection)
 		projectile.Damage = 3000
 		projectile.Force = 6000
 		projectile.Size = 20
-		projectile.BlastRadius = 600
-		projectile.BlastDamage = 50
+		projectile.DeflectAng = 20
+		projectile.BlastRadius = 300
+		projectile.BlastDamage = 500
 		projectile.BlastEffect = "simfphys_tankweapon_explosion"
 	
 	simfphys.FirePhysProjectile( projectile )
@@ -68,10 +66,8 @@ function simfphys.weapon:ValidClasses()
 end
 
 function simfphys.weapon:Initialize( vehicle )
-	net.Start( "simfphys_register_tank" )
-		net.WriteEntity( vehicle )
-		net.WriteString( "tiger" )
-	net.Broadcast()
+	vehicle:SetNWBool( "SpecialCam_Loader", true )
+	vehicle:SetNWFloat( "SpecialCam_LoaderTime", 5 )
 	
 	simfphys.RegisterCrosshair( vehicle:GetDriverSeat(), { Direction = Vector(0,0,1), Type = 2 } )
 	simfphys.RegisterCamera( vehicle:GetDriverSeat(), Vector(20,0,-130), Vector(0,60,75), true, "muzzle" )
@@ -81,7 +77,8 @@ function simfphys.weapon:Initialize( vehicle )
 	simfphys.RegisterCrosshair( vehicle.pSeat[1] , { Attachment = "muzzle_machinegun", Type = 1 } )
 	simfphys.RegisterCamera( vehicle.pSeat[1], Vector(35,-105,-15), Vector(35,-105,25), true )
 	
-	simfphys.RegisterCamera( vehicle.pSeat[2], Vector(0,0,55), Vector(0,0,55), true )
+	simfphys.RegisterCamera( vehicle.pSeat[2], Vector(0,0,25), Vector(0,0,25), false )
+	simfphys.RegisterCamera( vehicle.pSeat[3], Vector(0,0,25), Vector(0,0,25), false )
 	
 	timer.Simple( 1, function()
 		if not IsValid( vehicle ) then return end
@@ -163,9 +160,17 @@ function simfphys.weapon:ControlTurret( vehicle, deltapos )
 	local shootOrigin = Attachment.Pos + deltapos * engine.TickInterval()
 	
 	local fire = ply:KeyDown( IN_ATTACK )
+	local fire2 = ply:KeyDown( IN_ATTACK2 )
 
 	if fire then
 		self:PrimaryAttack( vehicle, ply, shootOrigin, Attachment )
+	end
+	
+	local Rate = FrameTime() / 8
+	vehicle.smTmpHMG = vehicle.smTmpHMG and vehicle.smTmpHMG + math.Clamp((fire2 and 1 or 0) - vehicle.smTmpHMG,-Rate * 4,Rate) or 0
+	
+	if fire2 then
+		self:SecondaryAttack( vehicle, ply, shootOrigin - Attachment.Ang:Up() * 155 - Attachment.Ang:Forward() * 20, Attachment.Ang )
 	end
 end
 
@@ -190,8 +195,11 @@ function simfphys.weapon:ControlMachinegun( vehicle, deltapos )
 	
 	local fire = ply:KeyDown( IN_ATTACK )
 
+	local Rate = FrameTime() / 8
+	vehicle.smTmpMG = vehicle.smTmpMG and vehicle.smTmpMG + math.Clamp((fire and 1 or 0) - vehicle.smTmpMG,-Rate * 4,Rate) or 0
+	
 	if fire then
-		self:SecondaryAttack( vehicle, ply, shootOrigin, Attachment, ID )
+		self:TertiaryAttack( vehicle, ply, shootOrigin, Attachment, ID )
 	end
 end
 
@@ -239,6 +247,71 @@ function simfphys.weapon:ControlTrackSounds( vehicle, wheelslocked )
 	end
 end
 
+function simfphys.weapon:ControlPassengerSeats( vehicle )
+	if not vehicle.pSeat then return end
+	
+	vehicle.sm_pp_yaw = vehicle.sm_pp_yaw and vehicle.sm_pp_yaw or 0
+	vehicle.sm_pp_pitch = vehicle.sm_pp_pitch and vehicle.sm_pp_pitch or 0
+	
+	local Commander = vehicle.pSeat[2]
+	if IsValid( Commander ) then
+		local ply = Commander:GetDriver()
+		local Toggle = false
+		if IsValid( ply ) then
+			Toggle = ply:KeyDown( IN_JUMP )
+		end
+		
+		if Toggle ~= vehicle.OldToggleC then
+			vehicle.OldToggleC = Toggle
+			if Toggle then
+				vehicle.tg_c_z = not vehicle.tg_c_z
+				
+				if vehicle.tg_c_z then
+					vehicle:EmitSound( "vehicles/atv_ammo_open.wav" )
+					simfphys.RegisterCamera( Commander, Vector(0,0,0), Vector(0,0,0), false )
+				else
+					vehicle:EmitSound( "vehicles/atv_ammo_close.wav" )
+					simfphys.RegisterCamera( Commander, Vector(0,0,25), Vector(0,0,25), false )
+				end
+			end
+		end
+
+		local X = math.sin( math.rad( -vehicle.sm_pp_yaw - 50 ) ) * 30
+		local Y = math.cos( math.rad( -vehicle.sm_pp_yaw - 50 ) ) * 30
+		Commander:SetLocalPos( Vector(X,Y,65 + (vehicle.tg_c_z and 25 or 0)) )
+		Commander:SetLocalAngles( Angle(0,vehicle.sm_pp_yaw - 90,0) ) 
+	end
+	
+	local Loader = vehicle.pSeat[3]
+	if IsValid( Loader ) then
+		local ply = Loader:GetDriver()
+		local Toggle = false
+		if IsValid( ply ) then
+			Toggle = ply:KeyDown( IN_JUMP )
+		end
+		
+		if Toggle ~= vehicle.OldToggleL then
+			vehicle.OldToggleL = Toggle
+			if Toggle then
+				vehicle.tg_l_z = not vehicle.tg_l_z
+				
+				if vehicle.tg_l_z then
+					vehicle:EmitSound( "vehicles/atv_ammo_open.wav" )
+					simfphys.RegisterCamera( Loader, Vector(0,0,0), Vector(0,0,0), false )
+				else
+					vehicle:EmitSound( "vehicles/atv_ammo_close.wav" )
+					simfphys.RegisterCamera( Loader, Vector(0,0,25), Vector(0,0,25), false )
+				end
+			end
+		end
+
+		local X = math.sin( math.rad( -vehicle.sm_pp_yaw - 170 ) ) * 28
+		local Y = math.cos( math.rad( -vehicle.sm_pp_yaw - 170 ) ) * 28
+		Loader:SetLocalPos( Vector(X,Y,60 + (vehicle.tg_l_z and 25 or 0)) )
+		Loader:SetLocalAngles( Angle(0,vehicle.sm_pp_yaw - 90,0) ) 
+	end
+end
+
 function simfphys.weapon:Think( vehicle )
 	if not IsValid( vehicle ) or not vehicle:IsInitialized() then return end
 	
@@ -253,6 +326,7 @@ function simfphys.weapon:Think( vehicle )
 	self:ControlTurret( vehicle, deltapos )
 	self:ControlMachinegun( vehicle, deltapos )
 	self:ControlTrackSounds( vehicle, handbrake )
+	self:ControlPassengerSeats( vehicle )
 	self:ModPhysics( vehicle, handbrake )
 end
 
@@ -261,24 +335,25 @@ function simfphys.weapon:PrimaryAttack( vehicle, ply, shootOrigin, Attachment )
 	
 	cannon_fire( ply, vehicle, shootOrigin, Attachment.Ang:Up() )
 	
-	self:SetNextPrimaryFire( vehicle, CurTime() + 7 )
+	self:SetNextPrimaryFire( vehicle, CurTime() + 5 )
 end
 
-function simfphys.weapon:SecondaryAttack( vehicle, ply, shootOrigin, Attachment, ID )
+function simfphys.weapon:SecondaryAttack( vehicle, ply, shootOrigin, shootDir )
 	
 	if not self:CanSecondaryAttack( vehicle ) then return end
+
+	mg_fire( ply, vehicle, shootOrigin, (shootDir + Angle(0,0.5,0)):Up() )
 	
-	local effectdata = EffectData()
-		effectdata:SetOrigin( shootOrigin )
-		effectdata:SetAngles( Attachment.Ang )
-		effectdata:SetEntity( vehicle )
-		effectdata:SetAttachment( ID )
-		effectdata:SetScale( 4 )
-	util.Effect( "CS_MuzzleFlash", effectdata, true, true )
+	self:SetNextSecondaryFire( vehicle, CurTime() + 0.07 + (vehicle.smTmpHMG ^ 5) * 0.08 )
+end
+
+function simfphys.weapon:TertiaryAttack( vehicle, ply, shootOrigin, Attachment, ID )
+	
+	if not self:CanTertiaryAttack( vehicle ) then return end
 	
 	mg_fire( ply, vehicle, shootOrigin, Attachment.Ang:Forward() )
 	
-	self:SetNextSecondaryFire( vehicle, CurTime() + 0.15 )
+	self:SetNextTertiaryFire( vehicle, CurTime() + 0.07 + (vehicle.smTmpMG ^ 5) * 0.08 )
 end
 
 function simfphys.weapon:AimMachinegun( ply, vehicle, pod )	
@@ -301,7 +376,7 @@ function simfphys.weapon:AimCannon( ply, vehicle, pod, Attachment )
 	
 	local Aimang = pod:WorldToLocalAngles( ply:EyeAngles() )
 	
-	local AimRate = 80
+	local AimRate = 35
 	
 	local Angles = vehicle:WorldToLocalAngles( Aimang )
 	
@@ -325,12 +400,23 @@ function simfphys.weapon:CanSecondaryAttack( vehicle )
 	return vehicle.NextShoot2 < CurTime()
 end
 
+function simfphys.weapon:CanTertiaryAttack( vehicle )
+	vehicle.NextShoot3 = vehicle.NextShoot3 or 0
+	return vehicle.NextShoot3 < CurTime()
+end
+
 function simfphys.weapon:SetNextPrimaryFire( vehicle, time )
 	vehicle.NextShoot = time
+	
+	vehicle:SetNWFloat( "SpecialCam_LoaderNext", time )
 end
 
 function simfphys.weapon:SetNextSecondaryFire( vehicle, time )
 	vehicle.NextShoot2 = time
+end
+
+function simfphys.weapon:SetNextTertiaryFire( vehicle, time )
+	vehicle.NextShoot3 = time
 end
 
 function simfphys.weapon:UpdateSuspension( vehicle )
